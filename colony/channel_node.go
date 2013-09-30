@@ -3,6 +3,7 @@ package colony
 import (
 	"log"
 	"math/rand"
+	"time"
 
 	"github.com/aaasen/colony/graph"
 )
@@ -10,29 +11,54 @@ import (
 type ChannelNode struct {
 	graph.Node
 
-	id        int
-	Resources <-chan *Resource
+	Resources    *Resource
+	ResourceChan <-chan *Resource
+	Ticker       <-chan time.Time
+
+	id       int
+	burnRate float64
 }
 
-func NewChannelNode(resources <-chan *Resource) *ChannelNode {
+func NewChannelNode(resources <-chan *Resource, ticker <-chan time.Time) *ChannelNode {
 	return &ChannelNode{
 		graph.Node{
 			Edges: make([]graph.Edger, 0),
 		},
-		rand.Int(),
+		NewResource(0.0),
 		resources,
+		ticker,
+		rand.Int(),
+		1.0,
 	}
 }
 
 func (self *ChannelNode) Listen() {
 	for {
 		select {
-		case resource := <-self.Resources:
-			go func(self *ChannelNode, resource *Resource) {
-				log.Printf("%v: %v", self.id, resource)
+		case <-self.Ticker:
+			log.Println("tick")
+			log.Println(self.Resources.Amount)
+			self.Resources = self.Resources.Subtract(self.burnRate)
+			select {
+			case resource := <-self.ResourceChan:
+				log.Printf("get: %v", resource)
 
-				self.distributeResource(resource, self.Edges)
-			}(self, resource)
+				self.Resources.Amount += resource.Amount
+				toShare := NewResource(self.Resources.Amount - self.burnRate)
+				self.Resources.Amount = self.burnRate
+
+				// self.Resources, resource = AddResources(self.Resources, resource)
+				// tempResource, share := SubtractResources(self.Resources, self.Resources.Subtract(self.burnRate))
+				// self.Resources = tempResource
+
+				log.Printf("giving: %v", toShare.Amount)
+
+				go func(self *ChannelNode, resource *Resource) {
+					self.distributeResource(resource, self.Edges)
+				}(self, toShare)
+			default:
+				break
+			}
 		}
 	}
 }
