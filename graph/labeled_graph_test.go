@@ -41,10 +41,10 @@ func makeLabeledTestGraph() *LabeledGraph {
 	node2 := NewNode()
 	node3 := NewNode()
 
-	node1.AddEdge(node2)
-	node1.AddEdge(node3)
-	node2.AddEdge(node3)
-	node3.AddEdge(node1)
+	node1.AddEdge(NewEdge(node2))
+	node1.AddEdge(NewEdge(node3))
+	node2.AddEdge(NewEdge(node3))
+	node3.AddEdge(NewEdge(node1))
 
 	graph.AddNode("node1", node1)
 	graph.AddNode("node2", node2)

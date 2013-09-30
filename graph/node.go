@@ -10,9 +10,11 @@ func NewNode() *Node {
 	}
 }
 
-// adds an edge connecting the node to a target
-func (self *Node) AddEdge(target *Node) {
-	self.Edges = append(self.Edges, NewEdge(target))
+// adds an edge to the node if one does not already exist
+func (self *Node) AddEdge(edge *Edge) {
+	if self.Adjacent(edge.Target) == nil {
+		self.Edges = append(self.Edges, edge)
+	}
 }
 
 // deletes the edge connecting the node to a target
