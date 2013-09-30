@@ -31,14 +31,19 @@ func (self *ChannelNode) Listen() {
 			go func(self *ChannelNode, resource *Resource) {
 				log.Printf("%v: %v", self.id, resource)
 
-				numEdges := len(self.Edges)
-
-				for _, edge := range self.Edges {
-					if channelEdge, ok := edge.(*ChannelEdge); ok {
-						channelEdge.Resources <- NewResource(resource.Amount / float64(numEdges))
-					}
-				}
+				self.distributeResource(resource, self.Edges)
 			}(self, resource)
+		}
+	}
+}
+
+func (self *ChannelNode) distributeResource(resource *Resource, edges []graph.Edger) {
+	// based on the assumption that all edges are channel edges
+	numEdges := len(self.Edges)
+
+	for _, edge := range edges {
+		if channelEdge, ok := edge.(*ChannelEdge); ok {
+			channelEdge.Resources <- NewResource(resource.Amount / float64(numEdges))
 		}
 	}
 }
