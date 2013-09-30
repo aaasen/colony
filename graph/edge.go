@@ -9,3 +9,7 @@ func NewEdge(target *Node) *Edge {
 		Target: target,
 	}
 }
+
+func (self *Edge) GetTarget() *Node {
+	return self.Target
+}

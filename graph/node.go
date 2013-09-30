@@ -1,18 +1,18 @@
 package graph
 
 type Node struct {
-	Edges []*Edge
+	Edges []Edger
 }
 
 func NewNode() *Node {
 	return &Node{
-		Edges: make([]*Edge, 0),
+		Edges: make([]Edger, 0),
 	}
 }
 
 // adds an edge to the node if one does not already exist
-func (self *Node) AddEdge(edge *Edge) {
-	if self.Adjacent(edge.Target) == nil {
+func (self *Node) AddEdge(edge Edger) {
+	if self.Adjacent(edge.GetTarget()) == nil {
 		self.Edges = append(self.Edges, edge)
 	}
 }
@@ -27,9 +27,9 @@ func (self *Node) DeleteEdge(target *Node) {
 }
 
 // returns the edge from the node to a target, or nil if there is none
-func (self *Node) Adjacent(target *Node) *Edge {
+func (self *Node) Adjacent(target *Node) Edger {
 	for _, edge := range self.Edges {
-		if edge.Target == target {
+		if edge.GetTarget() == target {
 			return edge
 		}
 	}
@@ -42,7 +42,7 @@ func (self *Node) Neighbors() []*Node {
 	neighbors := make([]*Node, 0)
 
 	for _, edge := range self.Edges {
-		neighbors = append(neighbors, edge.Target)
+		neighbors = append(neighbors, edge.GetTarget())
 	}
 
 	return neighbors
@@ -51,7 +51,7 @@ func (self *Node) Neighbors() []*Node {
 // returns the index of the edge pointing to the target node or -1 if there is none
 func (self *Node) findEdgeIndex(target *Node) int {
 	for i, edge := range self.Edges {
-		if edge.Target == target {
+		if edge.GetTarget() == target {
 			return i
 		}
 	}
