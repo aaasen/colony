@@ -36,20 +36,14 @@ func (self *ChannelNode) Listen() {
 	for {
 		select {
 		case <-self.Ticker:
-			log.Println("tick")
-			log.Println(self.Resources.Amount)
 			self.Resources = self.Resources.Subtract(self.burnRate)
 			select {
 			case resource := <-self.ResourceChan:
-				log.Printf("get: %v", resource)
+				log.Printf("get: %v", resource.Amount)
 
-				self.Resources.Amount += resource.Amount
-				toShare := NewResource(self.Resources.Amount - self.burnRate)
-				self.Resources.Amount = self.burnRate
-
-				// self.Resources, resource = AddResources(self.Resources, resource)
-				// tempResource, share := SubtractResources(self.Resources, self.Resources.Subtract(self.burnRate))
-				// self.Resources = tempResource
+				self.Resources = self.Resources.Add(resource.Amount)
+				newResource, toShare := SubtractResources(self.Resources, NewResource(self.Resources.Amount-self.burnRate))
+				self.Resources = newResource
 
 				log.Printf("giving: %v", toShare.Amount)
 
