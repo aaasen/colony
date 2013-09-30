@@ -1,15 +1,15 @@
 package graph
 
 type Edge struct {
-	Target *Node
+	Target Noder
 }
 
-func NewEdge(target *Node) *Edge {
+func NewEdge(target Noder) *Edge {
 	return &Edge{
 		Target: target,
 	}
 }
 
-func (self *Edge) GetTarget() *Node {
+func (self *Edge) GetTarget() Noder {
 	return self.Target
 }

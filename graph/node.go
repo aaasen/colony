@@ -18,7 +18,7 @@ func (self *Node) AddEdge(edge Edger) {
 }
 
 // deletes the edge connecting the node to a target
-func (self *Node) DeleteEdge(target *Node) {
+func (self *Node) DeleteEdge(target Noder) {
 	edgeIndex := self.findEdgeIndex(target)
 
 	if edgeIndex >= 0 {
@@ -27,7 +27,7 @@ func (self *Node) DeleteEdge(target *Node) {
 }
 
 // returns the edge from the node to a target, or nil if there is none
-func (self *Node) Adjacent(target *Node) Edger {
+func (self *Node) Adjacent(target Noder) Edger {
 	for _, edge := range self.Edges {
 		if edge.GetTarget() == target {
 			return edge
@@ -38,8 +38,8 @@ func (self *Node) Adjacent(target *Node) Edger {
 }
 
 // returns all nodes that the node connects to
-func (self *Node) Neighbors() []*Node {
-	neighbors := make([]*Node, 0)
+func (self *Node) Neighbors() []Noder {
+	neighbors := make([]Noder, 0)
 
 	for _, edge := range self.Edges {
 		neighbors = append(neighbors, edge.GetTarget())
@@ -49,7 +49,7 @@ func (self *Node) Neighbors() []*Node {
 }
 
 // returns the index of the edge pointing to the target node or -1 if there is none
-func (self *Node) findEdgeIndex(target *Node) int {
+func (self *Node) findEdgeIndex(target Noder) int {
 	for i, edge := range self.Edges {
 		if edge.GetTarget() == target {
 			return i
