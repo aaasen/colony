@@ -7,10 +7,10 @@ import (
 type ChannelEdge struct {
 	graph.Edge
 
-	Resources chan<- Resource
+	Resources chan<- *Resource
 }
 
-func NewChannelEdge(target graph.Noder, resources chan<- Resource) *ChannelEdge {
+func NewChannelEdge(target graph.Noder, resources chan<- *Resource) *ChannelEdge {
 	return &ChannelEdge{
 		graph.Edge{
 			Target: target,
