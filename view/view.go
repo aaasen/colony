@@ -18,6 +18,7 @@ const (
 func main() {
 	initGLFW()
 	glfw.SetKeyCallback(controller.KeyHandler)
+	glfw.SetMouseButtonCallback(controller.MouseButtonHandler)
 	defer terminateGLFW()
 
 	initScene()
