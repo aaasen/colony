@@ -16,7 +16,7 @@ func TestColony(t *testing.T) {
 	to2 := make(chan *Resource, 3)
 	to3 := make(chan *Resource, 3)
 
-	node1 := NewChannelNode(to1, time.Tick(tickDuration))
+	node1 := NewFactoryNode(to1, time.Tick(tickDuration), 10.0)
 	node2 := NewChannelNode(to2, time.Tick(tickDuration))
 	node3 := NewChannelNode(to3, time.Tick(tickDuration))
 
