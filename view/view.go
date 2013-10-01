@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 
+	"github.com/aaasen/colony/controller"
+
 	gl "github.com/chsc/gogl/gl21"
 	"github.com/jteeuwen/glfw"
 )
@@ -15,6 +17,7 @@ const (
 
 func main() {
 	initGLFW()
+	glfw.SetKeyCallback(controller.KeyHandler)
 	defer terminateGLFW()
 
 	initScene()
