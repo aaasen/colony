@@ -19,6 +19,7 @@ func main() {
 	initGLFW()
 	glfw.SetKeyCallback(controller.KeyHandler)
 	glfw.SetMouseButtonCallback(controller.MouseButtonHandler)
+	glfw.SetMousePosCallback(controller.MousePosHandler)
 	defer terminateGLFW()
 
 	initScene()
