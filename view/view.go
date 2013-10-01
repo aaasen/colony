@@ -17,18 +17,10 @@ func main() {
 	initGLFW()
 	defer terminateGLFW()
 
-	if err := gl.Init(); err != nil {
-		log.Fatalf("gl: %s\n", err)
-	}
-
-	if err := initScene(); err != nil {
-		log.Fatalf("init: %s\n", err)
-		return
-	}
+	initScene()
 	defer destroyScene()
 
 	for glfw.WindowParam(glfw.Opened) == 1 {
-
 		drawScene()
 		glfw.SwapBuffers()
 	}
@@ -38,14 +30,16 @@ func destroyScene() {
 
 }
 
-func initScene() (err error) {
+func initScene() {
+	if err := gl.Init(); err != nil {
+		log.Fatalf("gl: %s\n", err)
+	}
+
 	gl.Disable(gl.DEPTH_TEST)
 
 	gl.ClearColor(0.5, 0.5, 0.5, 0.0)
 
 	gl.Viewport(0, 0, Width, Height)
-
-	return
 }
 
 func drawScene() {
