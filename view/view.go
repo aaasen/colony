@@ -14,22 +14,8 @@ const (
 )
 
 func main() {
-	if err := glfw.Init(); err != nil {
-		log.Fatalf("glfw: %s\n", err)
-		return
-	}
-	defer glfw.Terminate()
-
-	glfw.OpenWindowHint(glfw.WindowNoResize, 1)
-
-	if err := glfw.OpenWindow(Width, Height, 0, 0, 0, 0, 16, 0, glfw.Windowed); err != nil {
-		log.Fatalf("glfw: %s\n", err)
-		return
-	}
-	defer glfw.CloseWindow()
-
-	glfw.SetSwapInterval(1)
-	glfw.SetWindowTitle(Title)
+	initGLFW()
+	defer terminateGLFW()
 
 	if err := gl.Init(); err != nil {
 		log.Fatalf("gl: %s\n", err)
@@ -48,6 +34,10 @@ func main() {
 	}
 }
 
+func destroyScene() {
+
+}
+
 func initScene() (err error) {
 	gl.Disable(gl.DEPTH_TEST)
 
@@ -56,9 +46,6 @@ func initScene() (err error) {
 	gl.Viewport(0, 0, Width, Height)
 
 	return
-}
-
-func destroyScene() {
 }
 
 func drawScene() {
