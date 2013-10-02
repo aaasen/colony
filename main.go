@@ -15,7 +15,7 @@ func main() {
 	model := model.NewModel(rendererChan, controlChan)
 	go model.Listen()
 
-	view := view.NewView(rendererChan)
+	view := view.NewView(rendererChan, controlChan)
 	view.Init()
 	defer view.Destroy()
 	go view.Listen()

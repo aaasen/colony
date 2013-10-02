@@ -2,6 +2,7 @@ package view
 
 import (
 	"log"
+	"time"
 
 	"github.com/aaasen/colony/controller"
 
@@ -13,15 +14,22 @@ const (
 	Title  = "Colony"
 	Width  = 640
 	Height = 480
+
+	Tick = time.Second / 60.0
 )
 
 type View struct {
-	Renderers <-chan Renderer
+	renderers <-chan Renderer
+	control   chan<- bool
+
+	ticker <-chan time.Time
 }
 
-func NewView(renderChan <-chan Renderer) *View {
+func NewView(renderers <-chan Renderer, control chan<- bool) *View {
 	return &View{
-		renderChan,
+		renderers: renderers,
+		control:   control,
+		ticker:    time.Tick(Tick),
 	}
 }
 
@@ -37,12 +45,11 @@ func (self *View) Init() {
 
 func (self *View) Listen() {
 	for glfw.WindowParam(glfw.Opened) == 1 {
-		// select {
-		// case renderer := <-self.Renderers:
-		// 	renderer.Render()
-		// }
-		drawScene()
-		glfw.SwapBuffers()
+		select {
+		case <-self.ticker:
+			drawScene()
+			glfw.SwapBuffers()
+		}
 	}
 }
 

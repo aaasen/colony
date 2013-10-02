@@ -6,23 +6,23 @@ import (
 )
 
 type Model struct {
-	Renderers chan<- view.Renderer
-	Control   <-chan bool
+	renderers chan<- view.Renderer
+	control   <-chan bool
 
 	colony *colony.Colony
 }
 
 func NewModel(renderers chan<- view.Renderer, control <-chan bool) *Model {
 	return &Model{
-		Renderers: renderers,
-		Control:   control,
+		renderers: renderers,
+		control:   control,
 	}
 }
 
 func (self *Model) Listen() {
 	for {
 		select {
-		case <-self.Control:
+		case <-self.control:
 
 		}
 	}
