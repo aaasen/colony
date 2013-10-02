@@ -6,7 +6,7 @@ type Colony struct {
 	Nodes []*ChannelNode
 }
 
-func (self *Colony) NewColony() *Colony {
+func NewColony() *Colony {
 	return &Colony{
 		Nodes: make([]*ChannelNode, 0),
 	}
