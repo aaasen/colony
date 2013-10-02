@@ -2,33 +2,39 @@ package colony
 
 import (
 	"log"
-	"math/rand"
 	"time"
 
 	"github.com/aaasen/colony/graph"
+	structs "github.com/aaasen/colony/model/structs"
+)
+
+const (
+	TickDuration = time.Second
 )
 
 type ChannelNode struct {
 	graph.Node
 
+	Position *structs.Vector2
+
+	BurnRate float64
+
 	Resources    *Resource
 	ResourceChan <-chan *Resource
-	Ticker       <-chan time.Time
 
-	id       int
-	burnRate float64
+	Ticker <-chan time.Time
 }
 
-func NewChannelNode(resources <-chan *Resource, ticker <-chan time.Time) *ChannelNode {
+func NewChannelNode(position *structs.Vector2, burnRate float64, resources <-chan *Resource) *ChannelNode {
 	return &ChannelNode{
 		graph.Node{
 			Edges: make([]graph.Edger, 0),
 		},
+		position,
+		burnRate,
 		NewResource(0.0),
 		resources,
-		ticker,
-		rand.Int(),
-		1.0,
+		time.Tick(TickDuration),
 	}
 }
 
@@ -36,13 +42,13 @@ func (self *ChannelNode) Listen() {
 	for {
 		select {
 		case <-self.Ticker:
-			self.Resources = self.Resources.Subtract(self.burnRate)
+			self.Resources = self.Resources.Subtract(self.BurnRate)
 			select {
 			case resource := <-self.ResourceChan:
 				log.Printf("get: %v", resource.Amount)
 
 				self.Resources = self.Resources.Add(resource.Amount)
-				newResource, toShare := SubtractResources(self.Resources, NewResource(self.Resources.Amount-self.burnRate))
+				newResource, toShare := SubtractResources(self.Resources, NewResource(self.Resources.Amount-self.BurnRate))
 				self.Resources = newResource
 
 				log.Printf("giving: %v", toShare.Amount)

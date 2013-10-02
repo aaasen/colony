@@ -5,20 +5,19 @@ import (
 	"time"
 
 	"github.com/aaasen/colony/graph"
+	structs "github.com/aaasen/colony/model/structs"
 )
 
 func TestColony(t *testing.T) {
-	tickDuration := time.Second
-
 	colony := graph.NewLabeledGraph()
 
 	to1 := make(chan *Resource, 3)
 	to2 := make(chan *Resource, 3)
 	to3 := make(chan *Resource, 3)
 
-	node1 := NewFactoryNode(to1, time.Tick(tickDuration), 10.0)
-	node2 := NewChannelNode(to2, time.Tick(tickDuration))
-	node3 := NewChannelNode(to3, time.Tick(tickDuration))
+	node1 := NewFactoryNode(&structs.Vector2{0.0, 0.0}, 10.0, to1)
+	node2 := NewChannelNode(&structs.Vector2{0.0, 0.0}, 1.0, to2)
+	node3 := NewChannelNode(&structs.Vector2{0.0, 0.0}, 1.0, to3)
 
 	node1.AddEdge(NewChannelEdge(node2, to2))
 	node1.AddEdge(NewChannelEdge(node3, to3))
