@@ -23,7 +23,7 @@ func (self *Model) Listen() {
 	for {
 		select {
 		case <-self.control:
-
+			self.renderers <- nil
 		}
 	}
 }

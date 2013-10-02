@@ -47,8 +47,13 @@ func (self *View) Listen() {
 	for glfw.WindowParam(glfw.Opened) == 1 {
 		select {
 		case <-self.ticker:
-			drawScene()
-			glfw.SwapBuffers()
+			self.control <- true
+
+			select {
+			case <-self.renderers:
+				drawScene()
+				glfw.SwapBuffers()
+			}
 		}
 	}
 }
