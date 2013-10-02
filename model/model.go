@@ -23,7 +23,7 @@ func (self *Model) Listen() {
 	for {
 		select {
 		case <-self.control:
-			self.renderers <- nil
+			self.renderers <- view.NewSquareRenderer(0, 0, 100, 100)
 		}
 	}
 }

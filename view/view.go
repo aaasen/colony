@@ -50,8 +50,11 @@ func (self *View) Listen() {
 			self.control <- true
 
 			select {
-			case <-self.renderers:
+			case renderer := <-self.renderers:
 				drawScene()
+
+				renderer.Render()
+
 				glfw.SwapBuffers()
 			}
 		}
