@@ -20,12 +20,12 @@ type ChannelNode struct {
 	BurnRate float64
 
 	Resources    *Resource
-	ResourceChan <-chan *Resource
+	ResourceChan chan *Resource
 
 	Ticker <-chan time.Time
 }
 
-func NewChannelNode(position *structs.Vector2, burnRate float64, resources <-chan *Resource) *ChannelNode {
+func NewChannelNode(position *structs.Vector2, burnRate float64, resources chan *Resource) *ChannelNode {
 	return &ChannelNode{
 		graph.Node{
 			Edges: make([]graph.Edger, 0),

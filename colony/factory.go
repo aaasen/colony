@@ -12,7 +12,7 @@ type FactoryNode struct {
 	CreateRate float64
 }
 
-func NewFactoryNode(position *structs.Vector2, createRate float64, resources <-chan *Resource) *FactoryNode {
+func NewFactoryNode(position *structs.Vector2, createRate float64, resources chan *Resource) *FactoryNode {
 	return &FactoryNode{
 		*NewChannelNode(position, 0.0, resources),
 		createRate,
