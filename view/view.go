@@ -1,4 +1,4 @@
-package main
+package view
 
 import (
 	"log"
@@ -15,20 +15,40 @@ const (
 	Height = 480
 )
 
-func main() {
+type View struct {
+	Renderers <-chan Renderer
+}
+
+func NewView(renderChan <-chan Renderer) *View {
+	return &View{
+		renderChan,
+	}
+}
+
+func (self *View) Init() {
 	initGLFW()
 	glfw.SetKeyCallback(controller.KeyHandler)
 	glfw.SetMouseButtonCallback(controller.MouseButtonHandler)
 	glfw.SetMousePosCallback(controller.MousePosHandler)
-	defer terminateGLFW()
 
 	initScene()
-	defer destroyScene()
 
+}
+
+func (self *View) Listen() {
 	for glfw.WindowParam(glfw.Opened) == 1 {
+		// select {
+		// case renderer := <-self.Renderers:
+		// 	renderer.Render()
+		// }
 		drawScene()
 		glfw.SwapBuffers()
 	}
+}
+
+func (self *View) Destroy() {
+	terminateGLFW()
+	destroyScene()
 }
 
 func destroyScene() {

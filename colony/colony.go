@@ -6,6 +6,12 @@ type Colony struct {
 	Nodes []*ChannelNode
 }
 
+func (self *Colony) NewColony() *Colony {
+	return &Colony{
+		Nodes: make([]*ChannelNode, 0),
+	}
+}
+
 func (self *Colony) AddNode(node *ChannelNode) {
 	for _, otherNode := range self.Nodes {
 		node.AddEdge(NewChannelEdge(otherNode, otherNode.ResourceChan))
