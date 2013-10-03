@@ -20,3 +20,9 @@ func (self *Colony) AddNode(node ListeningNoder) {
 
 	self.Nodes = append(self.Nodes, node)
 }
+
+func (self *Colony) Listen() {
+	for _, node := range self.Nodes {
+		go node.Listen()
+	}
+}

@@ -29,17 +29,17 @@ func (self *FactoryNode) Listen() {
 				log.Printf("get: %v", resource.Amount)
 
 				self.Resources = self.Resources.Add(resource.Amount)
-				newResource, toShare := SubtractResources(self.Resources, NewResource(self.Resources.Amount-self.BurnRate))
-				self.Resources = newResource
-
-				log.Printf("giving: %v", toShare.Amount)
-
-				go func(node *ChannelNode, resource *Resource) {
-					node.distributeResource(resource, self.Edges)
-				}(&self.ChannelNode, toShare)
 			default:
 				break
 			}
+
+			newResource, toShare := SubtractResources(self.Resources, NewResource(self.Resources.Amount-self.BurnRate))
+			self.Resources = newResource
+			log.Printf("giving: %v", toShare.Amount)
+
+			go func(node *ChannelNode, resource *Resource) {
+				node.distributeResource(resource, self.Edges)
+			}(&self.ChannelNode, toShare)
 		}
 	}
 }

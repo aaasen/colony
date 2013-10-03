@@ -35,6 +35,8 @@ func NewModel(renderers chan<- view.Renderer, control <-chan bool) *Model {
 }
 
 func (self *Model) Listen() {
+	go self.city.Listen()
+
 	for {
 		select {
 		case <-self.control:
