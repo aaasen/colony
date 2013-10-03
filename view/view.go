@@ -77,7 +77,7 @@ func initScene() {
 
 	gl.Disable(gl.DEPTH_TEST)
 
-	gl.ClearColor(0.5, 0.5, 0.5, 0.0)
+	gl.ClearColor(0.180, 0.8, 0.443, 0.0)
 
 	gl.Viewport(0, 0, Width, Height)
 }
@@ -89,9 +89,4 @@ func drawScene() {
 	gl.LoadIdentity()
 	gl.Ortho(0, Width, Height, 0, 0, 1)
 	gl.Color4f(1, 1, 1, 1)
-
-	gl.Begin(gl.LINES)
-	gl.Vertex2f(0, 0)
-	gl.Vertex2f(100, 100)
-	gl.End()
 }

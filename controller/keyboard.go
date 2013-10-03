@@ -6,9 +6,22 @@ import (
 	"github.com/jteeuwen/glfw"
 )
 
+const (
+	_ = iota
+	SayHey
+)
+
+var defaultKeyBindings = map[KeyEvent]int{
+	KeyEvent{KeyA, glfw.KeyPress}: SayHey,
+}
+
+type KeyEvent struct {
+	Key, State int
+}
+
+var keyEventChannel = make(chan KeyEvent)
+
 func KeyHandler(key, state int) {
 	log.Printf("key: %v, state: %v", key, state)
-	if key == KeyA && state == glfw.KeyPress {
-		log.Println("A pressed")
-	}
+	keyEventChannel <- KeyEvent{key, state}
 }

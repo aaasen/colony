@@ -1,6 +1,7 @@
 package model
 
 import (
+	"log"
 	"math/rand"
 
 	"github.com/aaasen/colony/colony"
@@ -9,13 +10,14 @@ import (
 )
 
 type Model struct {
-	renderers chan<- view.Renderer
-	control   <-chan bool
+	renderers    chan<- view.Renderer
+	keyEvents    <-chan int
+	requestModel <-chan bool
 
 	city *colony.Colony
 }
 
-func NewModel(renderers chan<- view.Renderer, control <-chan bool) *Model {
+func NewModel(renderers chan<- view.Renderer, keyEvents <-chan int, requestModel <-chan bool) *Model {
 	c := colony.NewColony()
 	c.AddNode(colony.NewFactoryNode(structs.NewVector2(rand.Float32()*100, rand.Float32()*100),
 		1.0,
@@ -28,9 +30,10 @@ func NewModel(renderers chan<- view.Renderer, control <-chan bool) *Model {
 		make(chan *colony.Resource)))
 
 	return &Model{
-		renderers: renderers,
-		control:   control,
-		city:      c,
+		renderers:    renderers,
+		keyEvents:    keyEvents,
+		requestModel: requestModel,
+		city:         c,
 	}
 }
 
@@ -39,7 +42,9 @@ func (self *Model) Listen() {
 
 	for {
 		select {
-		case <-self.control:
+		case event := <-self.keyEvents:
+			log.Println(event)
+		case <-self.requestModel:
 			allRenderers := make([]view.Renderer, len(self.city.Nodes))
 
 			for i, node := range self.city.Nodes {
