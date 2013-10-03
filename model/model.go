@@ -17,7 +17,7 @@ type Model struct {
 
 func NewModel(renderers chan<- view.Renderer, control <-chan bool) *Model {
 	c := colony.NewColony()
-	c.AddNode(colony.NewChannelNode(structs.NewVector2(rand.Float32()*100, rand.Float32()*100),
+	c.AddNode(colony.NewFactoryNode(structs.NewVector2(rand.Float32()*100, rand.Float32()*100),
 		1.0,
 		make(chan *colony.Resource)))
 	c.AddNode(colony.NewChannelNode(structs.NewVector2(rand.Float32()*100, rand.Float32()*100),
@@ -41,7 +41,7 @@ func (self *Model) Listen() {
 			allRenderers := make([]view.Renderer, len(self.city.Nodes))
 
 			for i, node := range self.city.Nodes {
-				allRenderers[i] = view.NewSquareRenderer(node.Position.X, node.Position.Y, 10, 10)
+				allRenderers[i] = view.NewSquareRenderer(node.GetPosition().X, node.GetPosition().Y, 10, 10)
 			}
 
 			self.renderers <- view.NewMultiRenderer(allRenderers)

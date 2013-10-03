@@ -3,19 +3,19 @@ package colony
 import ()
 
 type Colony struct {
-	Nodes []*ChannelNode
+	Nodes []ListeningNoder
 }
 
 func NewColony() *Colony {
 	return &Colony{
-		Nodes: make([]*ChannelNode, 0),
+		Nodes: make([]ListeningNoder, 0),
 	}
 }
 
-func (self *Colony) AddNode(node *ChannelNode) {
+func (self *Colony) AddNode(node ListeningNoder) {
 	for _, otherNode := range self.Nodes {
-		node.AddEdge(NewChannelEdge(otherNode, otherNode.ResourceChan))
-		otherNode.AddEdge(NewChannelEdge(node, node.ResourceChan))
+		node.AddEdge(NewChannelEdge(otherNode, otherNode.GetResourceChan()))
+		otherNode.AddEdge(NewChannelEdge(node, node.GetResourceChan()))
 	}
 
 	self.Nodes = append(self.Nodes, node)

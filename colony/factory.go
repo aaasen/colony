@@ -43,3 +43,11 @@ func (self *FactoryNode) Listen() {
 		}
 	}
 }
+
+func (self *FactoryNode) GetResourceChan() chan *Resource {
+	return self.ResourceChan
+}
+
+func (self *FactoryNode) GetPosition() *structs.Vector2 {
+	return self.Position
+}

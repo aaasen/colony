@@ -63,6 +63,14 @@ func (self *ChannelNode) Listen() {
 	}
 }
 
+func (self *ChannelNode) GetResourceChan() chan *Resource {
+	return self.ResourceChan
+}
+
+func (self *ChannelNode) GetPosition() *structs.Vector2 {
+	return self.Position
+}
+
 func (self *ChannelNode) distributeResource(resource *Resource, edges []graph.Edger) {
 	// based on the assumption that all edges are channel edges
 	numEdges := len(self.Edges)
