@@ -51,12 +51,17 @@ func (self *Model) viewListen() {
 			allRenderers := make([]view.Renderer, 0)
 
 			for _, node := range self.city.Nodes {
-				allRenderers = append(allRenderers, view.NewSquareRenderer(node.GetPosition().X, node.GetPosition().Y, 10, 10))
+				allRenderers = append(allRenderers,
+					view.NewSquareRenderer(node.GetPosition().X, node.GetPosition().Y, 10, 10))
 
 				for _, edge := range node.GetEdges() {
-					allRenderers = append(allRenderers, view.NewLineRenderer(0, 0, 100, 100))
+					if neighbor, ok := edge.GetTarget().(colony.ListeningNoder); ok {
+						allRenderers = append(allRenderers, view.NewLineRenderer(
+							node.GetPosition().X, node.GetPosition().Y,
+							neighbor.GetPosition().X, neighbor.GetPosition().Y))
 
-					log.Println(edge)
+						log.Println(edge)
+					}
 				}
 			}
 
