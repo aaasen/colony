@@ -3,6 +3,7 @@ package colony
 import (
 	"log"
 
+	"github.com/aaasen/colony/graph"
 	structs "github.com/aaasen/colony/model/structs"
 )
 
@@ -50,4 +51,8 @@ func (self *FactoryNode) GetResourceChan() chan *Resource {
 
 func (self *FactoryNode) GetPosition() *structs.Vector2 {
 	return self.Position
+}
+
+func (self *FactoryNode) GetEdges() []graph.Edger {
+	return self.Edges
 }

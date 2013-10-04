@@ -9,8 +9,8 @@ type ListeningNoder interface {
 	Listen()
 
 	GetResourceChan() chan *Resource
-
 	GetPosition() *structs.Vector2
+	GetEdges() []graph.Edger
 
 	// adds an edge to the node if one does not already exist
 	AddEdge(graph.Edger)

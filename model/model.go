@@ -48,10 +48,16 @@ func (self *Model) viewListen() {
 	for {
 		select {
 		case <-self.requestModel:
-			allRenderers := make([]view.Renderer, len(self.city.Nodes))
+			allRenderers := make([]view.Renderer, 0)
 
-			for i, node := range self.city.Nodes {
-				allRenderers[i] = view.NewSquareRenderer(node.GetPosition().X, node.GetPosition().Y, 10, 10)
+			for _, node := range self.city.Nodes {
+				allRenderers = append(allRenderers, view.NewSquareRenderer(node.GetPosition().X, node.GetPosition().Y, 10, 10))
+
+				for _, edge := range node.GetEdges() {
+					allRenderers = append(allRenderers, view.NewLineRenderer(0, 0, 100, 100))
+
+					log.Println(edge)
+				}
 			}
 
 			self.renderers <- view.NewMultiRenderer(allRenderers)
