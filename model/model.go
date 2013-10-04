@@ -40,10 +40,13 @@ func NewModel(renderers chan<- view.Renderer, keyEvents <-chan int, requestModel
 func (self *Model) Listen() {
 	go self.city.Listen()
 
+	go self.controllerListen()
+	go self.viewListen()
+}
+
+func (self *Model) viewListen() {
 	for {
 		select {
-		case event := <-self.keyEvents:
-			log.Println(event)
 		case <-self.requestModel:
 			allRenderers := make([]view.Renderer, len(self.city.Nodes))
 
@@ -52,6 +55,20 @@ func (self *Model) Listen() {
 			}
 
 			self.renderers <- view.NewMultiRenderer(allRenderers)
+		}
+	}
+}
+
+func (self *Model) controllerListen() {
+	for {
+		select {
+		case event := <-self.keyEvents:
+			self.city.AddNode(
+				colony.NewChannelNode(structs.NewVector2(rand.Float32()*100, rand.Float32()*100),
+					1.0,
+					make(chan *colony.Resource)))
+
+			log.Println(event)
 		}
 	}
 }

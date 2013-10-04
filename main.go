@@ -26,6 +26,6 @@ func main() {
 	controller.Subscribe(modelKeyChan)
 	go controller.Listen()
 
-	time.Sleep(time.Second * 10)
+	time.Sleep(time.Second * 100)
 
 }
