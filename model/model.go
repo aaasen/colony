@@ -59,8 +59,6 @@ func (self *Model) viewListen() {
 						allRenderers = append(allRenderers, view.NewLineRenderer(
 							node.GetPosition().X, node.GetPosition().Y,
 							neighbor.GetPosition().X, neighbor.GetPosition().Y))
-
-						log.Println(edge)
 					}
 				}
 			}

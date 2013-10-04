@@ -1,14 +1,16 @@
 package main
 
 import (
+	"math/rand"
+	"time"
+
 	"github.com/aaasen/colony/controller"
 	"github.com/aaasen/colony/model"
 	"github.com/aaasen/colony/view"
-
-	"time"
 )
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
 
 	rendererChan := make(chan view.Renderer)
 	controlChan := make(chan bool)
